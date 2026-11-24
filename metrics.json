@@ -1,0 +1,18 @@
+{
+  "Kolkata_temp": {
+    "mae": 1.474,
+    "rmse": 1.732
+  },
+  "Kolkata_rhum": {
+    "mae": 4.917,
+    "rmse": 6.477
+  },
+  "Delhi_temp": {
+    "mae": 1.073,
+    "rmse": 1.33
+  },
+  "Delhi_rhum": {
+    "mae": 6.099,
+    "rmse": 6.922
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "project": "weatherman",
+  "description": "Weather prediction (temperature & relative humidity) for Delhi and Kolkata using Prophet time-series models.",
+  "task": "time-series-forecasting",
+  "framework": "Prophet",
+  "language": "python",
+  "license": "MIT",
+  "model_card": "https://huggingface.co/anmolsehgal/weatherman",
+  "repository": "https://github.com/sehgalanmol/weatherman.git",
+
+  "data": {
+    "source": "Meteostat (Hourly)",
+    "cities": ["Delhi", "Kolkata"],
+    "city_codes": { "Delhi": 1, "Kolkata": 0 },
+    "variables": ["temp", "dwpt", "rhum", "prcp", "wdir", "wspd", "pres", "coco"],
+    "time_range": "2000-01-01 to 2024-12-31",
+    "frequency": "hourly",
+    "targets": ["temp", "rhum"],
+    "rows": 438290,
+    "train_cutoff": "last 90 days held out for evaluation"
+  },
+
+  "models": {
+    "temp_delhi": { "target": "temp", "city": "Delhi", "file": "temp_delhi.pkl" },
+    "temp_kolkata": { "target": "temp", "city": "Kolkata", "file": "temp_kolkata.pkl" },
+    "rhum_delhi": { "target": "rhum", "city": "Delhi", "file": "rhum_delhi.pkl" },
+    "rhum_kolkata": { "target": "rhum", "city": "Kolkata", "file": "rhum_kolkata.pkl" }
+  },
+
+  "prophet_config": {
+    "daily_seasonality": true,
+    "weekly_seasonality": true,
+    "yearly_seasonality": true,
+    "forecast_horizon": "next 3 days at 6-hour intervals"
+  },
+
+  "metrics": {
+    "evaluation": "daily-aggregated backtest, MAE/RMSE on held-out 90-day test set",
+    "Delhi_temp": { "mae": 1.073, "rmse": 1.330, "unit": "°C" },
+    "Delhi_rhum": { "mae": 6.099, "rmse": 6.922, "unit": "%" },
+    "Kolkata_temp": { "mae": 1.474, "rmse": 1.732, "unit": "°C" },
+    "Kolkata_rhum": { "mae": 4.917, "rmse": 6.477, "unit": "%" }
+  },
+
+  "api": {
+    "endpoint": "POST /weatherpredictor",
+    "request": { "type": "temperature|humidity", "city": "delhi|kolkata", "timestamp": "YYYY-MM-DD HH:MM" },
+    "response": { "city": "str", "type": "str", "timestamp": "str", "prediction": "float", "lower_bound": "float", "upper_bound": "float" }
+  },
+
+  "files": {
+    "notebook": "weatherman.ipynb",
+    "api": "main.py",
+    "model_loader": "model_loader.py",
+    "app": "app.py",
+    "requirements": "requirements.txt",
+    "dockerfile": "dockerfile",
+    "plots_dir": "plots/"
+  }
+}

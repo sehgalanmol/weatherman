@@ -1,5 +1,6 @@
 /data
-app.py
 /models
 weather_prediction.ipynb
 /venv
+__pycache__/
+*.pyc
